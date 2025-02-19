@@ -1,0 +1,23 @@
+{
+	"info": {
+		"_postman_id": "4a4cb244-f752-4863-94f4-c6d503010423",
+		"name": "VacQ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38266621"
+	},
+	"item": [
+		{
+			"name": "VacQ_assignment",
+			"item": [
+				{
+					"name": "VacQ_assignment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
