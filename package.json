@@ -68,6 +68,7 @@
     "mongoose": "^8.10.1",
     "ms": "^2.0.0",
     "negotiator": "^0.6.3",
+    "newman": "^6.2.1",
     "nodemon": "^3.1.9",
     "normalize-path": "^3.0.0",
     "object-inspect": "^1.13.4",
