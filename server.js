@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const connectDB = require('./config/db');
-const rateLimit = require('express-rate-limit');
+
 //Load env vars
 const mongoSanitize = require('express-mongo-sanitize');
 const { xss } = require('express-xss-sanitizer');
@@ -46,12 +46,8 @@ app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use(express.json());
 
-const limiter = rateLimit({
-    windowsMs: 10 * 60 * 1000,//10 mins
-    max: 100
-});
 
-app.use(limiter);
+
 
 app.use(helmet());
 
