@@ -1,6 +1,6 @@
 const express = require('express');
 const {getDentists, getDentist, createDentist, updateDentist, deleteDentist} = require('../controllers/dentists');
-const appointmentRouter=require('./bookings');
+const bookingRouter=require('./bookings');
 const router = express.Router();
 const {protect,authorize} = require('../middleware/auth');
 
