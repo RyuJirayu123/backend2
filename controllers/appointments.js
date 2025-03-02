@@ -71,8 +71,8 @@ exports.getAppointment = async (req, res, next) => {
     }
 };
 
-const Appointment = require('../models/Appointment');
-const Hospital = require('../models/Hospital');
+const Appointment = require('../models/Booking');
+const Hospital = require('../models/Dentist');
 
 // @desc       Add appointment
 // @route      POST /api/v1/hospitals/:hospitalId/appointment

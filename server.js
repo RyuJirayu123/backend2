@@ -1,31 +1,86 @@
 const express = require('express')
-
 const dotenv = require('dotenv');
-const cookieParser=require('cookie-parser');
-
+const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const connectDB = require('./config/db');
+const rateLimit = require('express-rate-limit');
 //Load env vars
+const mongoSanitize = require('express-mongo-sanitize');
+const { xss } = require('express-xss-sanitizer');
+const hpp=require('hpp');
+const cors=require('cors');
 
-dotenv.config({path:'./config/config.env'});
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
+
+
+
+dotenv.config({ path: './config/config.env' });
+
 connectDB();
-const app=express();
+
+const app = express();
+
+const swaggerOptions={
+    swaggerDefinition:{
+    openapi: '3.0.0',
+    info: {
+        title: 'Library API',
+        version: '1.0.0',
+        description: 'A simple Express VacQ API'
+          },
+          servers:
+[
+{
+url: 'http://localhost:5000/api/v1'
+}
+],
+    },
+    apis:['./routes/*.js'],
+};
+const swaggerDocs=swaggerJsDoc(swaggerOptions);
+
+app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 
 app.use(express.json());
-app.use (cookieParser());
 
-const hospitals = require('./routes/hospitals');
-const appointments =require('./routes/appointments');
+const limiter = rateLimit({
+    windowsMs: 10 * 60 * 1000,//10 mins
+    max: 6
+});
+
+app.use(limiter);
+
+app.use(helmet());
+
+app.use(mongoSanitize());
+
+app.use(xss());
+
+app.use(hpp());
+
+app.use(cors());
+
+app.use(cookieParser());
+
+
+
+const dentists = require('./routes/dentists');
+const bookings = require('./routes/bookings');
 const auth = require('./routes/auth');
 
 
 
-app.use('/api/v1/hospitals', hospitals);
-app.use('/api/v1/appointments', appointments);
+app.use('/api/v1/dentists', dentists);
+app.use('/api/v1/bookings', bookings);
 app.use('/api/v1/auth', auth);
 
 
-const PORT=process.env.PORT || 5000;
-const server = app.listen (PORT, console.log('Server running in ', process.env.NODE_ENV, ' mode on port ',PORT));
+
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT, console.log('Server running in ', process.env.NODE_ENV, ' mode on port ', PORT));
 
 process.on('unhandledRejection', (err, promise) => {
     console.log(`Error: ${err.message}`);

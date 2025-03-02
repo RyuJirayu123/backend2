@@ -5,10 +5,11 @@ const User = require('../models/User');
 //@access Public
 exports.register = async (req,res,next)=>{
     try{
-        const {name,email,password,role}=req.body;
+        const {name,tel,email,password,role}=req.body;
         
         const user=await User.create({
             name,
+            tel,
             email,
             role,
             password
@@ -43,6 +44,7 @@ exports.register = async (req,res,next)=>{
 //@route    POST /api/v1/auth/login
 //@access   Public
 exports.login= async (req,res,next)=>{
+   try{
     const {email , password}=req.body;
 
     //Validate email $ password
@@ -75,7 +77,10 @@ exports.login= async (req,res,next)=>{
     console.log(5555);
     sendTokenResponse(user,200,res);
 }
-
+catch(err){
+return res.status(401).json({success:false,mag:'Cannot convert email or password to string'})
+}
+}
 
 const sendTokenResponse=(user,statusCode,res)=>{
     //Create token
@@ -95,6 +100,7 @@ const sendTokenResponse=(user,statusCode,res)=>{
     })
 }
 
+
 // At the end of file
 // @desc      Get current Logged in user
 // @route     POST /api/v1/auth/me
@@ -105,5 +111,15 @@ exports.getMe = async (req, res, next) => {
     res.status(200).json({
         success: true,
         data: user
+    });
+};
+exports.logout=async(req,res,next)=>{
+    res.cookie('token','none',{
+    expires: new Date(Date.now()+ 10*1000),
+    httpOnly:true
+    });
+    res.status(200).json({
+    success:true,
+    data:{}
     });
 };
