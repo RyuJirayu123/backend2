@@ -96,10 +96,10 @@ exports.addBooking = async (req, res, next) => {
         //Check for exited booking
         const exitedBookings= await Booking.find({user:req.user.id});
 
-        //If the user is not an admin, they can only create up to 3 Booking
+        //If the user is not an admin, they can only create up to 1 Booking
         if(exitedBookings.length >= 1 && req.user.role !== 'admin'){
             return res.status(400).json({success:false,
-                message:`the user with ID ${req.user.id} has already made 3 bookings`
+                message:`the user with ID ${req.user.id} has already made 1 bookings`
             });
         }
         const booking = await Booking.create(req.body);
