@@ -16,6 +16,7 @@ const DentistSchema = new mongoose.Schema({
         type : [String],
         required: [true, 'Please add an expertise']
     }
+
 },
 {
     toJSON: { virtuals: true },
